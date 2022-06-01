@@ -1,15 +1,34 @@
 import React from 'react';
 
 const Header = ({ course }) => {
-    return <div>{course}</div>;
+    return <div>{course.course}</div>;
 };
 
-const Content = ({ content }) => {
-    return content.map((n) => (
+const Content = ({ courseInfo }) => {
+    return (
         <div>
-            {n.partTitle} {n.exercises}
+            <Part
+                partTitle={courseInfo.parts[0].partTitle}
+                exercises={courseInfo.parts[0].exercises}
+            />
+            <Part
+                partTitle={courseInfo.parts[1].partTitle}
+                exercises={courseInfo.parts[1].exercises}
+            />
+            <Part
+                partTitle={courseInfo.parts[2].partTitle}
+                exercises={courseInfo.parts[2].exercises}
+            />
         </div>
-    ));
+    );
+};
+
+const Part = ({ partTitle, exercises }) => {
+    return (
+        <div>
+            {partTitle},{exercises}
+        </div>
+    );
 };
 
 const Total = ({ total }) => {
@@ -32,8 +51,8 @@ const App = () => {
 
     return (
         <div>
-            <Header course={courseInfo.course} />
-            <Content content={courseInfo.parts} />
+            <Header course={courseInfo} />
+            <Content courseInfo={courseInfo} />
             <Total total={courseInfo.parts} />
         </div>
     );
