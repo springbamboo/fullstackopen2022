@@ -1,20 +1,11 @@
-import React from 'react';
-
-const Hello = (props) => {
-    return (
-        <div>
-            <p>Hello, {props.name}</p>
-        </div>
-    );
-};
+import React, { useState } from 'react';
 
 const App = () => {
-    return (
-        <div>
-            <p>Heo worlo2</p>
-            <Hello name="good" />
-        </div>
-    );
+    const [good, setGood] = useState(0);
+    const [neutral, setNeutral] = useState(0);
+    const [bad, setBad] = useState(0);
+
+    return <div>code here</div>;
 };
 
 export default App;

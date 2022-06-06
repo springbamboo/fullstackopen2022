@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
 import App from './App';
 
-createRoot(document.getElementById('root')).render(<App />);
+let counter;
+createRoot(document.getElementById('root')).render(<App counter={counter} />);
