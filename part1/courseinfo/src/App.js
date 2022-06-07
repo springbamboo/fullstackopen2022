@@ -20,6 +20,11 @@ const Content = ({ part }) => {
             <Part parts={part[0]} />
             <Part parts={part[1]} />
             <Part parts={part[2]} />
+            <div>
+                total of{' '}
+                {part[0].exercises + part[1].exercises + part[2].exercises}{' '}
+                exercises
+            </div>
         </div>
     );
 };
