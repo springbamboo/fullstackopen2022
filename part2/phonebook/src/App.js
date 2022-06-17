@@ -5,13 +5,21 @@ const App = () => {
     const [newName, setNewName] = useState('new name');
 
     const handleInputNameChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setNewName(e.target.value);
     };
 
     const handleButtonClick = (e) => {
         e.preventDefault();
-        setPersons(persons.concat({ name: newName }));
+        const person = persons.filter((ele) => {
+            return ele.name === newName;
+        });
+        if (person.length > 0) {
+            // console.log(person);
+            alert(`${person[0].name} is already added to phonebook`);
+        } else {
+            setPersons(persons.concat({ name: newName }));
+        }
     };
     return (
         <div>
