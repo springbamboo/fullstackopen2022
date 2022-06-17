@@ -1,25 +1,27 @@
 import { React, useState } from 'react';
 
 const App = () => {
-    const [persons, setPersons] = useState([{ name: 'Arto Hellas' }]);
-    const [newName, setNewName] = useState('new name');
+    const [persons, setPersons] = useState([
+        { name: 'Arto Hellas', number: '123456789' },
+    ]);
+    const [newPerson, setNewPerson] = useState({
+        name: 'name',
+        number: 'number',
+    });
 
     const handleInputNameChange = (e) => {
-        // console.log(e.target.value);
-        setNewName(e.target.value);
+        const changedNewPerson = { ...newPerson, name: e.target.value };
+        setNewPerson(changedNewPerson);
+    };
+
+    const handleInputNumberChange = (e) => {
+        const changedNewPerson = { ...newPerson, number: e.target.value };
+        setNewPerson(changedNewPerson);
     };
 
     const handleButtonClick = (e) => {
         e.preventDefault();
-        const person = persons.filter((ele) => {
-            return ele.name === newName;
-        });
-        if (person.length > 0) {
-            // console.log(person);
-            alert(`${person[0].name} is already added to phonebook`);
-        } else {
-            setPersons(persons.concat({ name: newName }));
-        }
+        setPersons(persons.concat(newPerson));
     };
     return (
         <div>
@@ -27,7 +29,17 @@ const App = () => {
             <form>
                 <div>
                     name:{' '}
-                    <input value={newName} onChange={handleInputNameChange} />
+                    <input
+                        value={newPerson.name}
+                        onChange={handleInputNameChange}
+                    />
+                </div>
+                <div>
+                    number:{' '}
+                    <input
+                        value={newPerson.number}
+                        onChange={handleInputNumberChange}
+                    />
                 </div>
                 <div>
                     <button type="submit" onClick={handleButtonClick}>
@@ -39,7 +51,9 @@ const App = () => {
             <div>
                 <ul>
                     {persons.map((ele) => (
-                        <li key={ele.name}>{ele.name}</li>
+                        <li key={ele.name}>
+                            {ele.name} {ele.number}
+                        </li>
                     ))}
                 </ul>
             </div>
