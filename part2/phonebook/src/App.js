@@ -2,12 +2,18 @@ import { React, useState } from 'react';
 
 const App = () => {
     const [persons, setPersons] = useState([
-        { name: 'Arto Hellas', number: '123456789' },
+        { name: 'Arto Hellas', number: '040-123456', id: 1 },
+        { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+        { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+        { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 },
     ]);
     const [newPerson, setNewPerson] = useState({
         name: 'name',
         number: 'number',
     });
+
+    const [newFilter, setNewFilter] = useState('');
+    const [filterPerson, setFilterPerson] = useState(persons);
 
     const handleInputNameChange = (e) => {
         const changedNewPerson = { ...newPerson, name: e.target.value };
@@ -23,10 +29,24 @@ const App = () => {
         e.preventDefault();
         setPersons(persons.concat(newPerson));
     };
+
+    const handleFilterChange = (e) => {
+        setNewFilter(e.target.value);
+        const a = persons.filter(
+            (ele) =>
+                ele.name.toLowerCase().indexOf(e.target.value.toLowerCase()) !==
+                -1
+        );
+        setFilterPerson(a);
+    };
+
     return (
         <div>
             <h2>Phonebook</h2>
+            filter shown with
+            <input onChange={handleFilterChange} />
             <form>
+                <h2>add a new</h2>
                 <div>
                     name:{' '}
                     <input
@@ -50,11 +70,17 @@ const App = () => {
             <h2>Numbers</h2>
             <div>
                 <ul>
-                    {persons.map((ele) => (
-                        <li key={ele.name}>
-                            {ele.name} {ele.number}
-                        </li>
-                    ))}
+                    {newFilter === ''
+                        ? persons.map((ele) => (
+                              <li key={ele.name}>
+                                  {ele.name} {ele.number}
+                              </li>
+                          ))
+                        : filterPerson.map((ele) => (
+                              <li key={ele.name}>
+                                  {ele.name} {ele.number}
+                              </li>
+                          ))}
                 </ul>
             </div>
         </div>
