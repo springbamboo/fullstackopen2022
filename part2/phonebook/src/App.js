@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from 'react';
+import phonebook from './services/phonebook';
 import axios from 'axios';
 
 const Filter = ({ setNewFilter, persons, setFilterPerson }) => {
@@ -33,7 +34,9 @@ const PersonForm = ({ newPerson, setNewPerson, setPersons, persons }) => {
 
     const handleButtonClick = (e) => {
         e.preventDefault();
-        setPersons(persons.concat(newPerson));
+        phonebook.create(newPerson).then((response) => {
+            setPersons(persons.concat(response));
+        });
     };
     return (
         <div>
@@ -97,8 +100,8 @@ const App = () => {
     const [newFilter, setNewFilter] = useState('');
     const [filterPerson, setFilterPerson] = useState(persons);
     useEffect(() => {
-        axios.get('http://localhost:3001/persons').then((response) => {
-            setPersons(response.data);
+        phonebook.getAll().then((response) => {
+            setPersons(response);
         });
     }, []);
 
