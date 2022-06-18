@@ -49,13 +49,20 @@ const PersonForm = ({
                 `${newPerson.name} is aleady added to phonebook, replace the old number with a new one?`
             );
             if (check) {
-                phonebook.updateOne(temp[0].id, newPerson).then((response) => {
-                    setPersons(
-                        persons.map((p) =>
-                            p.name !== newPerson.name ? p : response
-                        )
-                    );
-                });
+                phonebook
+                    .updateOne(temp[0].id, newPerson)
+                    .then((response) => {
+                        setPersons(
+                            persons.map((p) =>
+                                p.name !== newPerson.name ? p : response
+                            )
+                        );
+                    })
+                    .catch((e) => {
+                        setMessage(
+                            `${newPerson.name} has been already benn removed from server`
+                        );
+                    });
                 setMessage(`Changed ${newPerson.name}`);
                 setTimeout(() => {
                     setMessage(null);
