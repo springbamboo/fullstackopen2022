@@ -14,5 +14,9 @@ const create = async (newObject) => {
     return response.data;
 };
 
+const deleteOne = async (id) => {
+    axios.delete(`${baseUrl}/${id}`);
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create };
+export default { getAll, create, deleteOne };

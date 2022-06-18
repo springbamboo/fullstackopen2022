@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import phonebook from './services/phonebook';
-import axios from 'axios';
+// import axios from 'axios';
 
 const Filter = ({ setNewFilter, persons, setFilterPerson }) => {
     const handleFilterChange = (e) => {
@@ -67,7 +67,14 @@ const PersonForm = ({ newPerson, setNewPerson, setPersons, persons }) => {
     );
 };
 
-const Persons = ({ newFilter, filterPerson, persons }) => {
+const Persons = ({ newFilter, filterPerson, persons, setPersons }) => {
+    const handleDelete = (ele) => {
+        const check = window.confirm(`Delete ${ele.name}?`);
+        if (check) {
+            phonebook.deleteOne(ele.id);
+            setPersons(persons.filter((e) => e.id !== ele.id));
+        }
+    };
     return (
         <div>
             {' '}
@@ -78,11 +85,17 @@ const Persons = ({ newFilter, filterPerson, persons }) => {
                         ? persons.map((ele) => (
                               <li key={ele.name}>
                                   {ele.name} {ele.number}
+                                  <button onClick={() => handleDelete(ele)}>
+                                      delete
+                                  </button>
                               </li>
                           ))
                         : filterPerson.map((ele) => (
                               <li key={ele.name}>
                                   {ele.name} {ele.number}
+                                  <button onClick={() => handleDelete(ele)}>
+                                      delete
+                                  </button>
                               </li>
                           ))}
                 </ul>
@@ -126,6 +139,7 @@ const App = () => {
                 newFilter={newFilter}
                 filterPerson={filterPerson}
                 persons={persons}
+                setPersons={setPersons}
             />
         </div>
     );
