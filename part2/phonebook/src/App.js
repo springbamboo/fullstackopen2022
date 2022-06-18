@@ -1,6 +1,5 @@
 import { React, useState, useEffect } from 'react';
 import phonebook from './services/phonebook';
-// import axios from 'axios';
 
 const Filter = ({ setNewFilter, persons, setFilterPerson }) => {
     const handleFilterChange = (e) => {
@@ -34,9 +33,24 @@ const PersonForm = ({ newPerson, setNewPerson, setPersons, persons }) => {
 
     const handleButtonClick = (e) => {
         e.preventDefault();
-        phonebook.create(newPerson).then((response) => {
-            setPersons(persons.concat(response));
-        });
+        const temp = persons.filter((p) => p.name === newPerson.name);
+        if (persons.filter((p) => p.name === newPerson.name).length) {
+            const check = window.confirm(
+                `${newPerson.name} is aleady added to phonebook, replace the old number with a new one?`
+            );
+            if (check) {
+                phonebook.updateOne(temp[0].id, newPerson);
+                setPersons(
+                    persons.map((p) =>
+                        p.name !== newPerson.name ? p : newPerson
+                    )
+                );
+            }
+        } else {
+            phonebook.create(newPerson).then((response) => {
+                setPersons(persons.concat(response));
+            });
+        }
     };
     return (
         <div>
