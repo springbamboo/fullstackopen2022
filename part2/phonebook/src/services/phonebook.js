@@ -19,7 +19,9 @@ const deleteOne = async (id) => {
 };
 
 const updateOne = async (id, newObject) => {
-    axios.put(`${baseUrl}/${id}`,newObject);
+    const request = axios.put(`${baseUrl}/${id}`, newObject);
+    const response = await request;
+    return response.data;
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export

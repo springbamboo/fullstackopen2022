@@ -1,6 +1,10 @@
 import { React, useState, useEffect } from 'react';
 import phonebook from './services/phonebook';
 
+const Notification = ({ message }) => {
+    return <h3 className="message">{message}</h3>;
+};
+
 const Filter = ({ setNewFilter, persons, setFilterPerson }) => {
     const handleFilterChange = (e) => {
         setNewFilter(e.target.value);
@@ -20,7 +24,13 @@ const Filter = ({ setNewFilter, persons, setFilterPerson }) => {
     );
 };
 
-const PersonForm = ({ newPerson, setNewPerson, setPersons, persons }) => {
+const PersonForm = ({
+    newPerson,
+    setNewPerson,
+    setPersons,
+    persons,
+    setMessage,
+}) => {
     const handleInputNameChange = (e) => {
         const changedNewPerson = { ...newPerson, name: e.target.value };
         setNewPerson(changedNewPerson);
@@ -39,16 +49,25 @@ const PersonForm = ({ newPerson, setNewPerson, setPersons, persons }) => {
                 `${newPerson.name} is aleady added to phonebook, replace the old number with a new one?`
             );
             if (check) {
-                phonebook.updateOne(temp[0].id, newPerson);
-                setPersons(
-                    persons.map((p) =>
-                        p.name !== newPerson.name ? p : newPerson
-                    )
-                );
+                phonebook.updateOne(temp[0].id, newPerson).then((response) => {
+                    setPersons(
+                        persons.map((p) =>
+                            p.name !== newPerson.name ? p : response
+                        )
+                    );
+                });
+                setMessage(`Changed ${newPerson.name}`);
+                setTimeout(() => {
+                    setMessage(null);
+                }, 5000);
             }
         } else {
             phonebook.create(newPerson).then((response) => {
                 setPersons(persons.concat(response));
+                setMessage(`Added ${newPerson.name}`);
+                setTimeout(() => {
+                    setMessage(null);
+                }, 5000);
             });
         }
     };
@@ -81,12 +100,22 @@ const PersonForm = ({ newPerson, setNewPerson, setPersons, persons }) => {
     );
 };
 
-const Persons = ({ newFilter, filterPerson, persons, setPersons }) => {
+const Persons = ({
+    newFilter,
+    filterPerson,
+    persons,
+    setPersons,
+    setMessage,
+}) => {
     const handleDelete = (ele) => {
         const check = window.confirm(`Delete ${ele.name}?`);
         if (check) {
             phonebook.deleteOne(ele.id);
             setPersons(persons.filter((e) => e.id !== ele.id));
+            setMessage(`Deleted ${ele.name}`);
+            setTimeout(() => {
+                setMessage(null);
+            }, 5000);
         }
     };
     return (
@@ -126,6 +155,9 @@ const App = () => {
     });
     const [newFilter, setNewFilter] = useState('');
     const [filterPerson, setFilterPerson] = useState(persons);
+
+    const [message, setMessage] = useState(null);
+
     useEffect(() => {
         phonebook.getAll().then((response) => {
             setPersons(response);
@@ -134,26 +166,30 @@ const App = () => {
 
     return (
         <div>
-            <h2>Phonebook</h2>
-
+            <h1>Phonebook</h1>
+            {message === null ? (
+                <div></div>
+            ) : (
+                <Notification message={message} />
+            )}{' '}
             <Filter
                 setNewFilter={setNewFilter}
                 persons={persons}
                 setFilterPerson={setFilterPerson}
             />
-
             <PersonForm
                 newPerson={newPerson}
                 setNewPerson={setNewPerson}
                 setPersons={setPersons}
                 persons={persons}
+                setMessage={setMessage}
             />
-
             <Persons
                 newFilter={newFilter}
                 filterPerson={filterPerson}
                 persons={persons}
                 setPersons={setPersons}
+                setMessage={setMessage}
             />
         </div>
     );
