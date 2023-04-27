@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+app.use(express.json());
+
 let phonebook = [
     {
         id: 1,
@@ -54,6 +56,25 @@ app.delete('/api/persons/:id', (request, response) => {
     } else {
         response.status(204).end();
     }
+});
+
+app.post('/api/persons', (request, response) => {
+    const body = request.body;
+    console.log(body);
+
+    if (!request.body) {
+        return response.status(400).json({
+            error: 'content missing',
+        });
+    }
+    const person = {
+        id: Math.floor(Math.random() * 10000),
+        name: body.name,
+        number: body.number,
+    };
+
+    phonebook = phonebook.concat(person);
+    response.json(phonebook);
 });
 
 const PORT = 3001;
