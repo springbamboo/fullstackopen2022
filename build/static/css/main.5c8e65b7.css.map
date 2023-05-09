@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.5c8e65b7.css","mappings":"AAAA,SAII,qBAAsB,CAFtB,YAAa,CADb,aAAkB,CAElB,UAEJ","sources":["index.css"],"sourcesContent":[".message {\n    color: yellowgreen;\n    border: solid;\n    width: 100%;\n    background-color: gray;\n}\n"],"names":[],"sourceRoot":""}
