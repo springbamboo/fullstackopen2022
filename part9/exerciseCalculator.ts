@@ -22,17 +22,17 @@ const calculateExercises = (
     const success = average >= goal;
     const target = goal;
 
-    const calRating = (average: number, target: number): number => {
-        if (average >= target * 1.1) {
+    const calRating = (average: number, goal: number): number => {
+        if (average >= goal * 1.1) {
             return 1;
-        } else if (average >= target) {
+        } else if (average >= goal) {
             return 2;
         } else {
             return 3;
         }
     };
 
-    const rating = calRating(average, target);
+    const rating = calRating(average, goal);
 
     const calRatingDescription = (rating: number): string => {
         if (rating === 1) {
@@ -57,4 +57,4 @@ const calculateExercises = (
     };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+export default calculateExercises;
